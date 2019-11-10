@@ -1,9 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-
-# Create your views here.
 from django.views import View
-from rest_framework.utils import json
-
 from person.models import Person
 
 
@@ -30,3 +26,14 @@ class PersonView(View):
             pass
         return HttpResponse(status=201)
 
+    def save_person(self, name, surname, pesel, sex, birthday):
+        """
+        Saves person to database
+        """
+        person = Person()
+        person.name = name
+        person.surname = surname
+        person.pesel = pesel
+        person.sex = sex
+        person.birthday = birthday
+        person.save()
