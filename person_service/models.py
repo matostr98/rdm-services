@@ -23,6 +23,8 @@ class Person(models.Model):
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
     pesel = models.CharField(max_length=11)
+    #pPPP its variable response for 7-10number of pesel
+    pPPP=""
     #true means that person is a male
     sex = models.CharField(max_length=1)
     birthday = models.DateTimeField(default=timezone.now())
@@ -30,10 +32,19 @@ class Person(models.Model):
     # choose which sex is the person
     def _sex_(self):
         rand = random.randint(0, 206)
-        if rand < 100:
-            Person.sex = 1;
-        else:
-            Person.sex = 0;
+        while(1):
+            Person.pPPP = random.randint(1000,9999)
+            assist=int(Person.pPPP)
+            if rand < 100:
+                Person.sex = 1
+                if Person.pPPP%2==1:
+                    break
+
+            else:
+                Person.sex = 0
+                if Person.pPPP % 2 == 0:
+                    break
+
     #generating name
     def _name_(self):
         names = []
@@ -68,6 +79,8 @@ class Person(models.Model):
 
     def generating_date(self):
         rand=random.randint(0,3655)
+        d1 = datetime.strptime('1/1/1970 1:30 PM', '%m/%d/%Y %I:%M %p')
+        d2 = datetime.strptime('12/31/1975 4:50 AM', '%m/%d/%Y %I:%M %p')
         if(rand<580):
             #YEARS 1970-1976
             d1 = datetime.strptime('1/1/1970 1:30 PM', '%m/%d/%Y %I:%M %p')
@@ -97,7 +110,6 @@ class Person(models.Model):
             d2 = datetime.strptime('12/31/2013 4:50 AM', '%m/%d/%Y %I:%M %p')
             #YEARS 2006-2014
 
-            
         Person.birthday=random_date(d1,d2)
 
     def __str__(self):
