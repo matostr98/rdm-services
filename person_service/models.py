@@ -81,40 +81,78 @@ class Person(models.Model):
         rand=random.randint(0,3655)
         d1 = datetime.strptime('1/1/1970 1:30 PM', '%m/%d/%Y %I:%M %p')
         d2 = datetime.strptime('12/31/1975 4:50 AM', '%m/%d/%Y %I:%M %p')
-        if(rand<580):
-            #YEARS 1970-1976
+        if (0 < rand < 580):
+            # YEARS 1970-1976
             d1 = datetime.strptime('1/1/1970 1:30 PM', '%m/%d/%Y %I:%M %p')
             d2 = datetime.strptime('12/31/1975 4:50 AM', '%m/%d/%Y %I:%M %p')
-        if(rand<1280):
+        if (580 < rand < 1280):
             d1 = datetime.strptime('1/1/1976 1:30 PM', '%m/%d/%Y %I:%M %p')
             d2 = datetime.strptime('12/31/1981 4:50 AM', '%m/%d/%Y %I:%M %p')
-            #YEARS 1976-1982
-        if(rand<1930):
+            # YEARS 1976-1982
+        if (1280 < rand < 1930):
             d1 = datetime.strptime('1/1/1982 1:30 PM', '%m/%d/%Y %I:%M %p')
             d2 = datetime.strptime('12/31/1987 4:50 AM', '%m/%d/%Y %I:%M %p')
-            #YEARS 1982-1988
-        if(rand<2480):
+            # YEARS 1982-1988
+        if (1930 < rand < 2480):
             d1 = datetime.strptime('1/1/1988 1:30 PM', '%m/%d/%Y %I:%M %p')
             d2 = datetime.strptime('12/31/1993 4:50 AM', '%m/%d/%Y %I:%M %p')
-            #YEARS 1988-1994
-        if(rand<2880):
-            d1 = datetime.strptime('1/1/2008 1:30 PM', '%m/%d/%Y %I:%M %p')
-            d2 = datetime.strptime('31/12/1999 4:50 AM', '%m/%d/%Y %I:%M %p')
-            #YEARS 1994-2000
-        if(rand<3255):
+            # YEARS 1988-1994
+        if (2480 < rand < 2880):
+            d1 = datetime.strptime('1/1/1994 1:30 PM', '%m/%d/%Y %I:%M %p')
+            d2 = datetime.strptime('12/31/1999 4:50 AM', '%m/%d/%Y %I:%M %p')
+            # YEARS 1994-2000
+        if (2880 < rand < 3255):
             d1 = datetime.strptime('1/1/2000 1:30 PM', '%m/%d/%Y %I:%M %p')
             d2 = datetime.strptime('12/31/2005 4:50 AM', '%m/%d/%Y %I:%M %p')
-            #YEARS 2000-2006
-        if(rand<3655):
+            # YEARS 2000-2006
+        if (3255 < rand < 3655):
             d1 = datetime.strptime('1/1/2006 1:30 PM', '%m/%d/%Y %I:%M %p')
             d2 = datetime.strptime('12/31/2013 4:50 AM', '%m/%d/%Y %I:%M %p')
-            #YEARS 2006-2014
+            # YEARS 2006-2014
 
-        Person.birthday=random_date(d1,d2)
+
+        date=random_date(d1,d2)
+        Person.birthday=date
+        return date
+
+    def generatingPesel(self):
+        data=Person.generating_date()
+        #TODO: dodawanie 0 przed daty jeśli liczba jest <10.
+        #adding month to pesel
+        if(1900<data.year<2000):
+            # adding year to pesel
+            Person.pesel = Person.pesel + str(data.year%1900)
+            month=80
+            month=month+data.month
+            Person.pesel=Person.pesel+str(month)
+        elif 1999<data.year<3000:
+            # adding year to pesel
+            Person.pesel = Person.pesel + str(data.year%2000)
+            month=0
+            month=month+data.month
+            Person.pesel=Person.pesel+str(month)
+
+        #adding day to pesel
+        if(data.day<10):
+            Person.pesel[4]='0'
+            Person.pesel[5]=data.day
+        else:
+            Person.pesel=Person.pesel+str(data.day)
+        Person.pesel=Person.pesel+Person.pPPP
+
+
 
     def __str__(self):
         return self.pesel
 
 
+if __name__ == '__main__':
+    p=Person()
+    p.sex
+    p.generating_date()
+    p.name()
+    print(p.name)
+    print(p.birthday)
+    print(p.sex)
 
 
