@@ -29,6 +29,9 @@ class Person(models.Model):
     sex = models.CharField(max_length=1)
     birthday = models.DateTimeField(default=timezone.now())
 
+
+
+
     # choose which sex is the person
     def _sex_(self):
         rand = random.randint(0, 206)
@@ -130,7 +133,10 @@ class Person(models.Model):
             Person.pesel = Person.pesel + str(data.year%2000)
             month=0
             month=month+data.month
-            Person.pesel=Person.pesel+str(month)
+            if(month<10):
+                Person.pesel = Person.pesel + str(0)
+            else:
+                Person.pesel=Person.pesel+str(month)
 
         #adding day to pesel
         if(data.day<10):
@@ -139,8 +145,14 @@ class Person(models.Model):
         else:
             Person.pesel=Person.pesel+str(data.day)
         Person.pesel=Person.pesel+Person.pPPP
-
-
+        #1-3-7-9-1-3-7-9-1-3
+        Suma_kontrolna=int(Person.pesel[0])*1+int(Person.pesel[1])*3+int(Person.pesel[2])*7+int(Person.pesel[3])*9
+        Suma_kontrolna=Suma_kontrolna+int(Person.pesel[4]) * 1+int(Person.pesel[5])*3+int(Person.pesel[6])*7+int(Person.pesel[7])*9+int(Person.pesel[8])*1+int(Person.pesel[9])*3
+        if(Suma_kontrolna>10):
+            Suma_kontrolna=10-Suma_kontrolna%10
+        else:
+            Suma_kontrolna=10-Suma_kontrolna
+        Person.pesel=Person.pesel+str(Suma_kontrolna)
 
     def __str__(self):
         return self.pesel
