@@ -53,7 +53,7 @@ def generating_date():
         # YEARS 2006-2014
 
     date = random_date(d1, d2)
-    #TODO TUTAJ MOZE SIE WYWALAC BO TO MA JESZCZE CZAS TA DATE, 
+    #TODO TUTAJ MOZE SIE WYWALAC BO TO MA JESZCZE CZAS TA DATE,
     Person.birthday = date
     return date
 
