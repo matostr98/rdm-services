@@ -33,7 +33,6 @@ class PersonService:
 
     def generating_date(self):
         rand = random.randint(0, 3655)
-        rand = 3000
         d1 = datetime.strptime('1/1/1970 1:30 PM', '%m/%d/%Y %I:%M %p')
         d2 = datetime.strptime('12/31/1975 4:50 AM', '%m/%d/%Y %I:%M %p')
         # TODO Mozna dodawac wiecej lat
