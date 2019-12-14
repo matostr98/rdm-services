@@ -6,11 +6,6 @@ import random
 from person.models import Person
 
 
-
-
-
-
-
 class PersonService:
 
     def generate_person(self):
@@ -90,6 +85,7 @@ class PersonService:
 
     def _name_(self, person):
         names = []
+        #loading the names from .txt depending from sex
         if person.sex == 1:
             names = [line.rstrip('\n') for line in open('mens_name.txt', encoding="utf8")]
         else:
@@ -97,8 +93,7 @@ class PersonService:
         rand = random.randint(0, len(names) - 1)
         return names[rand]
 
-        # generating surname
-
+    # generating surname
     def _surname_(self, person):
         # creating variable
         vowel = ["a", "e", "i", "o", "u", "y"]
@@ -106,11 +101,11 @@ class PersonService:
         male_surname_ends = ["ski", "cki", "dzki", "ak", "ek", "ik", "yk", "ki", "owicz", "eowicz","ewicz","el","ny","uk","in","ny"]
         female_surname_ends = ["ska", "cka", "dzka", "ak", "ek", "ik", "yk", "ka", "owicz", "eowicz","na","ul","uk"]
         surname = ""
-        # generating the first 2 letters of surname
+        # generating the first 3 letters of surname
         surname = consonants[random.randint(0, len(consonants) - 1)].upper() \
                   + vowel[random.randint(0, len(vowel) - 1)]\
                 +consonants[random.randint(0, len(consonants) - 1)]
-            # adding "koncowka" basic on sex
+            # adding endings basic on sex
         if (person.sex == 1):
             surname = surname + male_surname_ends[random.randint(0, len(male_surname_ends) - 1)]
         else:
@@ -124,7 +119,6 @@ class PersonService:
         person.save()
 
     def generatingPesel(self, person, pPPP):
-        # this is very stupid way but i need this date to pesel
         data = self.generating_date()
         print(f"date: {data}")
         if 1900 < data.year < 2000:
@@ -133,11 +127,11 @@ class PersonService:
             if len(year) != 2:
                 year = "0" + year
             print(f"year function: {year}")
-            # there was a bug here that the pesel has infinity len
             person.pesel = year
             # adding month to pesel
 
             month = str(data.month)
+            #adding exception when the month len will be smaller than 10
             if int(month) < 10:
                 month = "0" + month
             person.pesel = person.pesel + str(month)

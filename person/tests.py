@@ -114,8 +114,8 @@ def generatingPesel( person, pPPP,data):
         return person.pesel + str(checksum)
 
 if __name__ == '__main__':
-    d1 = datetime.strptime('1/1/2006 1:30 PM', '%m/%d/%Y %I:%M %p')
-    d2 = datetime.strptime('12/31/2013 4:50 AM', '%m/%d/%Y %I:%M %p')
+    d1 = datetime.strptime('1/1/2000 1:30 PM', '%m/%d/%Y %I:%M %p')
+    d2 = datetime.strptime('12/31/2005 4:50 AM', '%m/%d/%Y %I:%M %p')
     p=person
     #print(random_date(d1,d2))
     for a in range(0,100):
