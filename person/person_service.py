@@ -66,7 +66,6 @@ class PersonService:
             # YEARS 2006-2014
 
         date = self.random_date(d1, d2)
-        # TODO TUTAJ MOZE SIE WYWALAC BO TO MA JESZCZE CZAS TA DATE,
         # person.birthday = date
         return date
 
@@ -134,11 +133,12 @@ class PersonService:
             if len(year) != 2:
                 year = "0" + year
             print(f"year function: {year}")
-            person.pesel += year
+            # there was a bug here that the pesel has infinity len
+            person.pesel = year
             # adding month to pesel
 
             month = str(data.month)
-            if len(month) != 1:
+            if int(month) < 10:
                 month = "0" + month
             person.pesel = person.pesel + str(month)
         elif 2000 <= data.year < 2099:
@@ -169,16 +169,13 @@ class PersonService:
         print(f"pesel: {person.pesel}")
         # 1-3-7-9-1-3-7-9-1-3
         # creating "Suma kontrolna"
-        Suma_kontrolna = int(person.pesel[0]) * 1 + int(person.pesel[1]) * 3 \
-                         + int(person.pesel[2]) * 7 + int(person.pesel[3]) * 9
-        Suma_kontrolna = Suma_kontrolna + int(person.pesel[4]) * 1 + int(person.pesel[5]) * 3\
-                         + int(person.pesel[6]) * 7 + int(person.pesel[7]) * 9 + int(person.pesel[8]) * 1 + int(person.pesel[9]) * 3
-        if (Suma_kontrolna > 10):
-            Suma_kontrolna = 10 - Suma_kontrolna % 10
-        else:
-            Suma_kontrolna = 10 - Suma_kontrolna
+        checksum = (int(person.pesel[0]) * 1)%10 + (int(person.pesel[1]) * 3)%10 \
+                                  + (int(person.pesel[2]) * 7)%10 + (int(person.pesel[3]) * 9)%10
+        checksum = checksum + (int(person.pesel[4]) * 1)%10 + (int(person.pesel[5]) * 3)%10\
+                                  + (int(person.pesel[6]) * 7)%10 + (int(person.pesel[7]) * 9)%10 + (int(person.pesel[8]) * 1)%10 + (int(person.pesel[9]) * 3)%10
+        checksum = 10 - checksum% 10
         print("-----------------------")
-        return person.pesel + str(Suma_kontrolna)
+        return person.pesel + str(checksum)
 
 
 

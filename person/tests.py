@@ -6,6 +6,7 @@ import random
 # Create your tests here.
 class person:
     sex=0
+    pesel=""
 
 def random_date( start, end):
     """
@@ -21,7 +22,7 @@ def random_date( start, end):
     print(data.timetz())
 
     print(data.time())
-    #return data.year +data.month+ data.day
+    return start + timedelta(seconds=random_second)
 
 def _surname_( person):
         # creating variable
@@ -54,6 +55,63 @@ def _name_( person):
         rand = random.randint(0, len(names) - 1)
         return names[rand]
 
+def generatingPesel( person, pPPP,data):
+
+        print(f"date: {data}")
+        if 1900 < data.year < 2000:
+            # adding year to pesel
+            year = str(data.year % 1900)
+            if len(year) != 2:
+                year = "0" + year
+            print(f"year function: {year}")
+            #there was a bug here that the pesel has infinity len
+            person.pesel = year
+            # adding month to pesel
+
+            month = str(data.month)
+            if int(month) <10:
+                month = "0" + month
+            person.pesel = person.pesel + str(month)
+        elif 2000 <= data.year < 2099:
+            # adding year to pesel
+            year = str(data.year % 2000)
+            if data.year == 2000:
+                year = "00"
+            else:
+                if len(year) == 1:
+                    year = "0" + year
+            print(f"year function: {year}")
+            person.pesel = year
+            # adding month to pesel
+            month = 20
+            month = month + data.month
+
+            person.pesel = person.pesel + str(month)
+        print(month)
+        print("haha")
+        print(f"year: {person.pesel}")
+        # adding day to pesel
+        if data.day < 10:
+            day = "0" + str(data.day)
+            print(f"small day: {day}")
+            person.pesel += day
+        else:
+            person.pesel = person.pesel + str(data.day)
+        print(f"day: {data.day}")
+        person.pesel = person.pesel + str(pPPP)
+        print(f"pesel: {person.pesel}")
+        # 1-3-7-9-1-3-7-9-1-3
+        # creating "Suma kontrolna"
+        checksum = (int(person.pesel[0]) * 1)%10 + (int(person.pesel[1]) * 3)%10 \
+                                  + (int(person.pesel[2]) * 7)%10 + (int(person.pesel[3]) * 9)%10
+        checksum = checksum + (int(person.pesel[4]) * 1)%10 + (int(person.pesel[5]) * 3)%10\
+                                  + (int(person.pesel[6]) * 7)%10 + (int(person.pesel[7]) * 9)%10 + (int(person.pesel[8]) * 1)%10 + (int(person.pesel[9]) * 3)%10
+        checksum = 10 - checksum% 10
+        if(len(person.pesel)>=11):
+            print("nie dziala")
+            return 0
+        print("-----------------------")
+        return person.pesel + str(checksum)
 
 if __name__ == '__main__':
     d1 = datetime.strptime('1/1/2006 1:30 PM', '%m/%d/%Y %I:%M %p')
@@ -64,3 +122,4 @@ if __name__ == '__main__':
         #print(_surname_(p))
         print(_name_(p)+" "+_surname_(p))
         p.sex=random.randint(0,1)
+        print(generatingPesel(p,"0123",random_date(d1,d2)))
