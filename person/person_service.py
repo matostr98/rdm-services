@@ -83,19 +83,19 @@ class PersonService:
                 # person.sex = 1
                 if pPPP % 2 == 1:
                     print(pPPP)
-                    return 'M', pPPP
+                    return 1, pPPP
             else:
                 # person.sex = 0
                 if pPPP % 2 == 0:
                     print(pPPP)
-                    return 'F', pPPP
+                    return 0, pPPP
 
     def _name_(self, person):
         names = []
         if person.sex == 1:
             names = [line.rstrip('\n') for line in open('mens_name.txt', encoding="utf8")]
         else:
-            names = [line.rstrip('\n') for line in open('girl_name.txt', encoding="utf8")]
+            names = [line.rstrip('\n') for line in open('girls_name.txt', encoding="utf8")]
         rand = random.randint(0, len(names) - 1)
         return names[rand]
 
@@ -119,69 +119,13 @@ class PersonService:
             surname = surname + female_surname_ends[random.randint(0, len(female_surname_ends) - 1)]
         return surname
 
-    def generatingPesel(self, person, pPPP):
-        # this is very stupid way but i need this date to pesel
-        data = self.generating_date()
-        print(f"date: {data}")
-        if 1900 < data.year < 2000:
-            # adding year to pesel
-            year = str(data.year % 1900)
-            if len(year) != 2:
-                year = "0" + year
-            print(f"year function: {year}")
-            person.pesel += year
-            # adding month to pesel
-            month = 80
-            month = month + data.month
-            person.pesel = person.pesel + str(month)
-        elif 2000 < data.year < 2099:
-            # adding year to pesel
-            year = str(data.year % 2000)
-            if len(year) == 1:
-                year = "0" + year
-            if len(year) == 0:
-                year = "00"
-            print(f"year function: {year}")
-            person.pesel = year
-            # adding month to pesel
-            month = 0
-            month = month + data.month
-            # if month will be smaller than <10
-            if (month < 10):
-                person.pesel += "0" + str(month)
-            else:
-                person.pesel = person.pesel + str(month)
-        print(f"year: {person.pesel}")
-        # adding day to pesel
-        if data.day < 10:
-            day = "0" + str(data.day)
-            print(f"small day: {day}")
-            person.pesel += day
-        else:
-            person.pesel = person.pesel + str(data.day)
-        print(f"day: {data.day}")
-        person.pesel = person.pesel + str(pPPP)
-        print(f"pesel: {person.pesel}")
-        # 1-3-7-9-1-3-7-9-1-3
-        # creating "Suma kontrolna"
-        Suma_kontrolna = int(person.pesel[0]) * 1 + int(person.pesel[1]) * 3 \
-                         + int(person.pesel[2]) * 7 + int(person.pesel[3]) * 9
-        Suma_kontrolna = Suma_kontrolna + int(person.pesel[4]) * 1 + int(person.pesel[5]) * 3\
-                         + int(person.pesel[6]) * 7 + int(person.pesel[7]) * 9 + int(person.pesel[8]) * 1 + int(person.pesel[9]) * 3
-        if (Suma_kontrolna > 10):
-            Suma_kontrolna = 10 - Suma_kontrolna % 10
-        else:
-            Suma_kontrolna = 10 - Suma_kontrolna
-        print("-----------------------")
-        return person.pesel + str(Suma_kontrolna)
-
     def save_person(self, person):
         """
         Saves person to database
         """
         person.save()
 
-def generatingPesel(self, person, pPPP):
+    def generatingPesel(self, person, pPPP):
         # this is very stupid way but i need this date to pesel
         data = self.generating_date()
         print(f"date: {data}")
@@ -198,13 +142,14 @@ def generatingPesel(self, person, pPPP):
             if len(month) != 1:
                 month = "0" + month
             person.pesel = person.pesel + str(month)
-        elif 2000 < data.year < 2099:
+        elif 2000 <= data.year < 2099:
             # adding year to pesel
             year = str(data.year % 2000)
-            if len(year) == 1:
-                year = "0" + year
-            if len(year) == 0:
+            if data.year == 2000:
                 year = "00"
+            else:
+                if len(year) == 1:
+                    year = "0" + year
             print(f"year function: {year}")
             person.pesel = year
             # adding month to pesel
