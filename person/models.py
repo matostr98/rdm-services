@@ -7,6 +7,7 @@ class Person(models.Model):
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
     pesel = models.CharField(max_length=11)
+    # true means that person is a male
     sex = models.CharField(max_length=1)
     birthday = models.DateTimeField(default=datetime.now)
 

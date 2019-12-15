@@ -1,9 +1,18 @@
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from person.models import Person
+from datetime import datetime
+from random import randrange
+from datetime import timedelta
+import random
+
+from person.person_service import PersonService
 
 
 class PersonView(View):
+
+    def __init__(self):
+        self.person_service = PersonService()
 
     def get(self, request):
         """
@@ -21,19 +30,14 @@ class PersonView(View):
             return JsonResponse(person_list, safe=False)
 
     def post(self, request, number=1):
+        """
+        Http method to generate persons and save them to database
+        Example url to generate six persons: localhost:8000/person/6
+        :param number: number of generated persons, default is 1
+        :return: http status for created
+        """
         for i in range(0, number):
-            # TODO: put here generate
-            pass
+            #creating new object
+            person = self.person_service.generate_person()
+            self.person_service.save_person(person) #TODO verify if pesel is not taken
         return HttpResponse(status=201)
-
-    def save_person(self, name, surname, pesel, sex, birthday):
-        """
-        Saves person to database
-        """
-        person = Person()
-        person.name = name
-        person.surname = surname
-        person.pesel = pesel
-        person.sex = sex
-        person.birthday = birthday
-        person.save()
