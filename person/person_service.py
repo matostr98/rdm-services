@@ -167,7 +167,7 @@ class PersonService:
                                   + (int(person.pesel[2]) * 7)%10 + (int(person.pesel[3]) * 9)%10
         checksum = checksum + (int(person.pesel[4]) * 1)%10 + (int(person.pesel[5]) * 3)%10\
                                   + (int(person.pesel[6]) * 7)%10 + (int(person.pesel[7]) * 9)%10 + (int(person.pesel[8]) * 1)%10 + (int(person.pesel[9]) * 3)%10
-        checksum = 10 - checksum% 10
+        checksum = (10 - checksum)% 10
         print("-----------------------")
         return person.pesel + str(checksum)
 
