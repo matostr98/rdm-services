@@ -11,7 +11,8 @@ from person.person_service import PersonService
 
 class PersonView(View):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.person_service = PersonService()
 
     def get(self, request):
@@ -38,6 +39,6 @@ class PersonView(View):
         """
         for i in range(0, number):
             #creating new object
-            person = self.person_service.generate_person()
-            self.person_service.save_person(person) #TODO verify if pesel is not taken
+            person = self.person_service.create_person()
+            person.save()
         return HttpResponse(status=201)

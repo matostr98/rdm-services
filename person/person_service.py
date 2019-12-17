@@ -2,21 +2,25 @@ from datetime import datetime
 from random import randrange
 from datetime import timedelta
 import random
+import logging
 
 from person.models import Person
 
 
 class PersonService:
 
-    def generate_person(self):
+    def create_person(self):
         person = Person()
-        person.sex, pPPP = self._sex_()
-        person.name = self._name_(person)
-        person.surname = self._surname_(person)
-        person.pesel = self.generatingPesel(person, pPPP)
+        person.sex = self.__generate_sex()
+        person.birthday = self.__generate_date()
+        person.name = self.__generate_name(person.sex)
+        person.surname = self.__generate_surname(person.sex)
+        person.pesel = self.__generate_pesel(person.birthday, person.sex)
+        logging.basicConfig(level=logging.DEBUG)
+        logging.info(f"Created person {person.name} {person.surname} with pesel {person.pesel}")
         return person
 
-    def random_date(self, start, end):
+    def __random_date(self, start, end):
         """
         This function will return a random datetime between two datetime
         objects.
@@ -26,7 +30,7 @@ class PersonService:
         random_second = randrange(int_delta)
         return start + timedelta(seconds=random_second)
 
-    def generating_date(self):
+    def __generate_date(self):
         rand = random.randint(0, 3655)
         d1 = datetime.strptime('1/1/1970 1:30 PM', '%m/%d/%Y %I:%M %p')
         d2 = datetime.strptime('12/31/1975 4:50 AM', '%m/%d/%Y %I:%M %p')
@@ -60,41 +64,28 @@ class PersonService:
             d2 = datetime.strptime('12/31/2013 4:50 AM', '%m/%d/%Y %I:%M %p')
             # YEARS 2006-2014
 
-        date = self.random_date(d1, d2)
-        # person.birthday = date
+        date = self.__random_date(d1, d2)
         return date
 
-        # choose which sex is the person
-
-    def _sex_(self):
+    def __generate_sex(self):
         rand = random.randint(0, 206)
-        print("test")
-        while (1):
-            pPPP = random.randint(1000, 9999)
-            # assist = int(pPPP)
+        while 1:
             if rand < 100:
-                # person.sex = 1
-                if pPPP % 2 == 1:
-                    print(pPPP)
-                    return 1, pPPP
+                return 1
             else:
-                # person.sex = 0
-                if pPPP % 2 == 0:
-                    print(pPPP)
-                    return 0, pPPP
+                return 0
 
-    def _name_(self, person):
+    def __generate_name(self, sex):
         names = []
         #loading the names from .txt depending from sex
-        if person.sex == 1:
-            names = [line.rstrip('\n') for line in open('mens_name.txt', encoding="utf8")]
+        if sex == 1:
+            names = [line.rstrip('\n') for line in open('./person/mens_name.txt', encoding="utf8")]
         else:
-            names = [line.rstrip('\n') for line in open('girls_name.txt', encoding="utf8")]
+            names = [line.rstrip('\n') for line in open('./person/girls_name.txt', encoding="utf8")]
         rand = random.randint(0, len(names) - 1)
         return names[rand]
 
-    # generating surname
-    def _surname_(self, person):
+    def __generate_surname(self, sex):
         # creating variable
         vowel = ["a", "e", "i", "o", "u", "y"]
         consonants = ["b", "c", "d", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "w", "z"]
@@ -104,72 +95,68 @@ class PersonService:
         # generating the first 3 letters of surname
         surname = consonants[random.randint(0, len(consonants) - 1)].upper() \
                   + vowel[random.randint(0, len(vowel) - 1)]\
-                +consonants[random.randint(0, len(consonants) - 1)]
+                  + consonants[random.randint(0, len(consonants) - 1)]
             # adding endings basic on sex
-        if (person.sex == 1):
+        if sex == 1:
             surname = surname + male_surname_ends[random.randint(0, len(male_surname_ends) - 1)]
         else:
             surname = surname + female_surname_ends[random.randint(0, len(female_surname_ends) - 1)]
         return surname
 
-    def save_person(self, person):
-        """
-        Saves person to database
-        """
-        person.save()
+    def __generate_pesel(self, date, sex):
+        pesel_date = self.__create_pesel_date(date)
+        series = self.__create_pesel_series(sex)
+        checksum = self.__create_pesel_checksum(pesel_date + series)
+        pesel = pesel_date + series + checksum
+        while not self.__is_unique(pesel):
+            series = self.__create_pesel_series(sex)
+            checksum = self.__create_pesel_checksum(pesel_date + series)
+            pesel = pesel_date + series + checksum
+        return pesel
 
-    def generatingPesel(self, person, pPPP):
-        data = self.generating_date()
-        print(f"date: {data}")
-        if 1900 < data.year < 2000:
-            # adding year to pesel
-            year = str(data.year % 1900)
-            if len(year) != 2:
-                year = "0" + year
-            print(f"year function: {year}")
-            person.pesel = year
-            # adding month to pesel
+    def __create_pesel_date(self, date):
+        pesel_date = ""
+        if 1900 < date.year < 2000:
+            year = str(date.year % 1900)
+            pesel_date = self.__fix_length(year, 2)
+            month = str(date.month)
+            pesel_date += self.__fix_length(month, 2)
+        elif 2000 <= date.year < 2099:
+            year = str(date.year % 2000)
+            year = self.__fix_length(year, 2)
+            pesel_date = year
+            month = 20 + date.month
+            pesel_date += str(month)
+        day = self.__fix_length(str(date.day), 2)
+        pesel_date += day
+        return pesel_date
 
-            month = str(data.month)
-            #adding exception when the month len will be smaller than 10
-            if int(month) < 10:
-                month = "0" + month
-            person.pesel = person.pesel + str(month)
-        elif 2000 <= data.year < 2099:
-            # adding year to pesel
-            year = str(data.year % 2000)
-            if data.year == 2000:
-                year = "00"
-            else:
-                if len(year) == 1:
-                    year = "0" + year
-            print(f"year function: {year}")
-            person.pesel = year
-            # adding month to pesel
-            month = 20
-            month = month + data.month
+    def __create_pesel_series(self, sex):
+        series = random.randint(0, 9999)
+        if sex == 1:
+            while series % 2 != 1:
+                series = random.randint(0, 9999)
+        elif sex == 0:
+            while series % 2 != 0:
+                series = random.randint(0, 9999)
+        return self.__fix_length(str(series), 4)
 
-            person.pesel = person.pesel + str(month)
-        print(f"year: {person.pesel}")
-        # adding day to pesel
-        if data.day < 10:
-            day = "0" + str(data.day)
-            print(f"small day: {day}")
-            person.pesel += day
+    def __create_pesel_checksum(self, pesel):
+        checksum = (int(pesel[0]) * 1) % 10 + (int(pesel[1]) * 3) % 10 \
+                   + (int(pesel[2]) * 7) % 10 + (int(pesel[3]) * 9) % 10
+        checksum += (int(pesel[4]) * 1) % 10 + (int(pesel[5]) * 3) % 10 \
+                    + (int(pesel[6]) * 7) % 10 + (int(pesel[7]) * 9) % 10 \
+                    + (int(pesel[8]) * 1) % 10 + (int(pesel[9]) * 3) % 10
+        return str((10 - checksum) % 10)
+
+    def __fix_length(self, date, length):
+        while len(date) < length:
+            date = "0" + date
+        return date
+
+    def __is_unique(self, pesel):
+        duplicate_list = list(Person.objects.filter(pesel=pesel).values())
+        if len(duplicate_list) > 0:
+            return False
         else:
-            person.pesel = person.pesel + str(data.day)
-        print(f"day: {data.day}")
-        person.pesel = person.pesel + str(pPPP)
-        print(f"pesel: {person.pesel}")
-        # 1-3-7-9-1-3-7-9-1-3
-        # creating "Suma kontrolna"
-        checksum = (int(person.pesel[0]) * 1)%10 + (int(person.pesel[1]) * 3)%10 \
-                                  + (int(person.pesel[2]) * 7)%10 + (int(person.pesel[3]) * 9)%10
-        checksum = checksum + (int(person.pesel[4]) * 1)%10 + (int(person.pesel[5]) * 3)%10\
-                                  + (int(person.pesel[6]) * 7)%10 + (int(person.pesel[7]) * 9)%10 + (int(person.pesel[8]) * 1)%10 + (int(person.pesel[9]) * 3)%10
-        checksum = (10 - checksum)% 10
-        print("-----------------------")
-        return person.pesel + str(checksum)
-
-
-
+            return True
