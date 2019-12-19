@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
+
 # Create your models here.
 class Person(models.Model):
     name = models.CharField(max_length=30)
@@ -12,7 +13,7 @@ class Person(models.Model):
     birthday = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return self.name + " " + self.surname + " " + self.pesel + " " + self.sex
+        return self.name + " " + self.surname + " " + self.pesel + " " + self.sex + " " + str(self.birthday)
 
     class Meta:
         db_table = "peselgen_person"

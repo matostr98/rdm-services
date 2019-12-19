@@ -77,7 +77,7 @@ class PersonService:
 
     def __generate_name(self, sex):
         names = []
-        #loading the names from .txt depending from sex
+        # loading the names from .txt depending from sex
         if sex == 1:
             names = [line.rstrip('\n') for line in open('./person/mens_name.txt', encoding="utf8")]
         else:
@@ -89,14 +89,15 @@ class PersonService:
         # creating variable
         vowel = ["a", "e", "i", "o", "u", "y"]
         consonants = ["b", "c", "d", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "w", "z"]
-        male_surname_ends = ["ski", "cki", "dzki", "ak", "ek", "ik", "yk", "ki", "owicz", "eowicz","ewicz","el","ny","uk","in","ny"]
-        female_surname_ends = ["ska", "cka", "dzka", "ak", "ek", "ik", "yk", "ka", "owicz", "eowicz","na","ul","uk"]
+        male_surname_ends = ["ski", "cki", "dzki", "ak", "ek", "ik", "yk", "ki", "owicz", "eowicz", "ewicz", "el", "ny",
+                             "uk", "in", "ny"]
+        female_surname_ends = ["ska", "cka", "dzka", "ak", "ek", "ik", "yk", "ka", "owicz", "eowicz", "na", "ul", "uk"]
         surname = ""
         # generating the first 3 letters of surname
         surname = consonants[random.randint(0, len(consonants) - 1)].upper() \
-                  + vowel[random.randint(0, len(vowel) - 1)]\
+                  + vowel[random.randint(0, len(vowel) - 1)] \
                   + consonants[random.randint(0, len(consonants) - 1)]
-            # adding endings basic on sex
+        # adding endings basic on sex
         if sex == 1:
             surname = surname + male_surname_ends[random.randint(0, len(male_surname_ends) - 1)]
         else:
