@@ -11,11 +11,11 @@ where \<appname\> could be 'person' or 'metrics'
 ### python manage.py runserver  
 
 ## Endpoints  
-/person - shows generated persons  
-/metrics - shows generated patient metrics  
-/generate - generates persons then metrics  
-/generate/flush - deletes all records from both database tables  
-/generate/flush/\<table\> - deletes all records from specified table, could be 'person' or 'metrics'  
+/person - method: GET - shows generated persons  
+/metrics - method: GET - shows generated patient metrics  
+/generate - method: POST - generates persons then metrics  
+/generate/flush - method: PUT - deletes all records from both database tables  
+/generate/flush/\<table\> - method: PUT - deletes all records from specified table, could be 'person' or 'metrics'  
   
 ## Data model 
 #TODO: ADD DATA MODEL DESCRIPTION 
