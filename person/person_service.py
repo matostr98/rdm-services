@@ -1,3 +1,5 @@
+import re
+import string
 from datetime import datetime
 from random import randrange
 from datetime import timedelta
@@ -12,12 +14,15 @@ class PersonService:
     def create_person(self):
         person = Person()
         person.sex = self.__generate_sex()
-        person.birthday = self.__generate_date()
-        person.name = self.__generate_name(person.sex)
-        person.surname = self.__generate_surname(person.sex)
-        person.pesel = self.__generate_pesel(person.birthday, person.sex)
+        person.birth_date = self.__generate_date()
+        person.first_name = self.__generate_name(person.sex)
+        person.last_name = self.__generate_surname(person.sex)
+        person.pesel = self.__generate_pesel(person.birth_date, person.sex)
+        person.email = self.__generate_email(person.first_name, person.last_name)
+        person.phone = self.__generate_phone()
+        person.password = self.__generate_password()
         logging.basicConfig(level=logging.DEBUG)
-        logging.info(f"Created person {person.name} {person.surname} with pesel {person.pesel}")
+        logging.info(f"Created person {person.first_name} {person.last_name} with pesel {person.pesel}")
         return person
 
     def __random_date(self, start, end):
@@ -103,6 +108,40 @@ class PersonService:
         else:
             surname = surname + female_surname_ends[random.randint(0, len(female_surname_ends) - 1)]
         return surname
+
+    def __generate_email(self, name, surname):
+        domains = ['somemail.com', 'anothermail.net', 'imaginarymail.com']
+        at = '@'
+        dot = '.'
+        ending = str(random.randint(1, 999))
+        domain_name = random.choice(domains)
+
+        mail = name + dot + surname + ending + at + domain_name
+        valid_mail = re.sub(r'[^\x00-\x7F]+', '', mail)
+        return valid_mail
+
+    def __generate_phone(self):
+        dialling_code = '048'
+        digits = string.digits
+        number_chars = random.choices(digits, k=9)
+
+        number = ''
+        for c in number_chars:
+            number += c
+
+        return dialling_code + number
+
+    def __generate_password(self):
+        length = random.randint(8, 16)
+        chars = string.ascii_letters
+
+        password_chars = random.choices(chars, k=length)
+
+        password = ''
+        for c in password_chars:
+            password += c
+
+        return password
 
     def __generate_pesel(self, date, sex):
         pesel_date = self.__create_pesel_date(date)
