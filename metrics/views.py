@@ -1,3 +1,5 @@
+import multiprocessing
+
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 
@@ -28,9 +30,8 @@ class MetricsView(View):
         :param number: number of generated persons, default is 1
         :return: http status for created
         """
-
         for i in range(0, number):
-            # creating new object
             metrics = self.metrics_service.create_metrics()
             metrics.save()
+
         return HttpResponse(status=201)
