@@ -4,14 +4,9 @@ from generator.probability_entity import ProbabilityEntity
 
 
 class RandomEntity:
-    def __init__(self, key, count: int, values: List[ProbabilityEntity]):
+    def __init__(self, key, value):
         self.key = key
-        self.count = count
-        self.values = []
-        self.weights = []
-        for v in values:
-            self.values.append(v)
-            self.weights.append(v.weight)
+        self.value = value
 
     def __str__(self):
-        return str(self.key) + " " + str(self.count) + " " + str(self.values) + " " + str(self.weights)
+        return str(self.key) + " " + str(self.value)

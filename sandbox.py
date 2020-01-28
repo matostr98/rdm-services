@@ -1,18 +1,11 @@
-from generator.probability_entity import ProbabilityEntity
+import json
+
 from generator.random_entity import RandomEntity
-from generator.generator import Generator
 
-banana = ProbabilityEntity(None, 1)
-apple = ProbabilityEntity("apple", 1)
-pear = ProbabilityEntity("pear", 0)
-strawberry = ProbabilityEntity("strawberry", 1)
-melon = ProbabilityEntity("melon", 1)
+with open('resources/test.json') as json_file:
+    data = json.load(json_file)
+    print(data)
 
-entity = RandomEntity("Fruit", 20, [banana, apple, pear, strawberry, melon])
+    entities = data['attributes']
 
-generator = Generator()
-result = generator.generate(entity)
-print(result)
-
-
-
+    print(entities)
