@@ -24,8 +24,7 @@ class PersonView(View):
         """
         pesel = request.GET.get('pesel')
         if pesel:
-            person = list(Person.objects.filter(pesel=pesel).values())[0] #TODO exception if more than one
-            return JsonResponse(person, safe=False)
+            person = list(Person.objects.filter(pesel=pesel).values())[0]
         else:
             person_list = list(Person.objects.all().values())
             return JsonResponse(person_list, safe=False)
@@ -38,7 +37,7 @@ class PersonView(View):
         :return: http status for created
         """
         for i in range(0, number):
-            #creating new object
+            # creating new object
             person = self.person_service.create_person()
             person.save()
         return HttpResponse(status=201)

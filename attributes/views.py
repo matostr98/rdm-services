@@ -9,7 +9,7 @@ class AttributesView(View):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.attributes_service = AttributesService('resources/test.json')
+        self.attributes_service = AttributesService('resources/model.json')
 
     def get(self, request):
         """

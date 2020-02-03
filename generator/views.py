@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 
+from attributes.models import MetricsAttributes
 from metrics.metrics_service import MetricsService
 from metrics.models import PatientMetrics
 from person.models import Person
@@ -40,12 +41,14 @@ class GeneratorView(View):
         :return: http status for created
         """
         if table == 'metrics':
+            MetricsAttributes.objects.all().delete()
             PatientMetrics.objects.all().delete()
 
         elif table == 'person':
             Person.objects.all().delete()
 
         elif table == '':
+            MetricsAttributes.objects.all().delete()
             PatientMetrics.objects.all().delete()
             Person.objects.all().delete()
 

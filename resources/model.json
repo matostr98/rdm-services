@@ -1,0 +1,59 @@
+{
+  "model":
+  [
+    {
+      "key": "key1",
+      "count": 1,
+      "array": ["do", "re", "mi", "fa", "so", "la", "si"]
+    },
+    {
+      "key": "key2",
+      "count": 1,
+      "array": ["do", "re", "mi", "fa", "so", "la", "si"],
+      "weights": [1,2,3,4,3,2,1]
+    },
+    {
+      "key": "key3",
+      "array": ["do", "re", "mi", "fa", "so", "la", "si"],
+      "weights": [1,1,1,1,1,1,1]
+    },
+    {
+      "key": "key4",
+      "array": ["do", "re", "mi", "fa", "so", "la", "si"],
+      "weights": [999,1,1,1,1,1,1],
+      "count": 3
+    },
+    {
+      "key": "key5",
+      "minimum": 10,
+      "maximum": 100,
+      "count": 3
+    },
+    {
+      "key": "key6",
+      "minimum": 1,
+      "maximum": 9
+    },
+    {
+      "key": "key7",
+      "minimum": 1,
+      "maximum": 9,
+      "type": "float"
+    },
+    {
+      "key": "key8",
+      "minimum": 1,
+      "maximum": 9,
+      "type": "float",
+      "floating_points": 2
+    },
+    {
+      "key": "key9",
+      "minimum": 1,
+      "maximum": 9,
+      "type": "float",
+      "floating_points": 0,
+      "count": 99
+    }
+  ]
+}
