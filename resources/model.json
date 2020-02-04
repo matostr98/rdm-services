@@ -62,6 +62,13 @@
       "min_date": "1/1/1970 1:30 PM",
       "max_date": "12/1/1970 1:30 PM",
       "count": 2
+    },
+    {
+      "key": "normal distribution",
+      "distribution": "normal",
+      "mu": 0,
+      "sigma": 0.1,
+      "count": 10
     }
   ]
 }

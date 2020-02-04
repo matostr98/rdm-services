@@ -8,7 +8,7 @@ class PatientMetrics(models.Model):
     patient_id = models.CharField(max_length=30)
     doctor_id = models.CharField(max_length=30)
     created = models.DateTimeField(default=datetime.now)
-    attributes = models.CharField(max_length=30)
+    attributes_id = models.CharField(max_length=30)
     notes = models.CharField(max_length=1024)
 
     def __str__(self):
