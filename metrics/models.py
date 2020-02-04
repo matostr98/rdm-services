@@ -6,7 +6,7 @@ from person.models import Person
 
 # Create your models here.
 class PatientMetrics(models.Model):
-    patient_id = models.ForeignKey(Person, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Person, on_delete=models.CASCADE)
     doctor_id = models.CharField(max_length=30)
     created = models.DateTimeField(default=datetime.now)
     attributes = models.CharField(max_length=30)

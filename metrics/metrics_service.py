@@ -16,13 +16,13 @@ class MetricsService:
 
     def create_metrics(self):
         metrics = PatientMetrics()
-        metrics.patient_id = self.__generate_patient_id()
+        metrics.patient = self.__generate_patient_id()
         metrics.doctor_id = self.__generate_doctor_id()
         metrics.created = self.__generate_date()
         metrics.attributes = self.__generate_attributes()
         metrics.notes = self.__generate_notes()
         logging.basicConfig(level=logging.DEBUG)
-        logging.info(f"Created metrics {metrics.patient_id} {metrics.doctor_id} with creation date {metrics.created}")
+        logging.info(f"Created metrics {metrics.patient} {metrics.doctor_id} with creation date {metrics.created}")
         return metrics
 
     def __random_date(self, start, end):
