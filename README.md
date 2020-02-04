@@ -1,6 +1,6 @@
 # Random Data Maker
 ## Overview
-Random Data Maker is REST webservice for defined data sets, including personal data and medical metrics data for machine learning.
+Random Data Maker is a REST webservice for defined data sets, including personal data and medical metrics data for machine learning.
 
 ## Requirements 
 ##### Software: 
