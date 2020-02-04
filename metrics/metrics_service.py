@@ -46,8 +46,8 @@ class MetricsService:
     def __generate_patient_id(self):
         patients_id_list = Person.objects.filter().values_list('id', flat=True)
         patient_id = random.choice(patients_id_list)
-
-        return str(patient_id)
+        patient = Person.objects.get(id=patient_id)
+        return patient
 
     def __generate_doctor_id(self):
         return 'doctor_id'
