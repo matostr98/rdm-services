@@ -45,7 +45,7 @@ Data model is in JSON format. It is used to specify what kind of data app should
 * `floating_points` - number of digits after decimal point
 
 ## How it works?
-Random Data Maker is rest api app and has defined endpoints to communicate with it. It has three kinds of endpoints: generating number of random records (POST), getting them from database in form of JSON (GET) and flushing tables (PUT). When post method is used it generates random data e.g personal data, metrics data using app own random data generator and saves it in database. This random data generator takes JSON file with defined data model and uses this to generate new data. When data is in database it can be accessed with get methods. Project was originally made as support for medical machine learning system OCULUS Project
+Random Data Maker is a rest api app and has defined endpoints to communicate with it. It has three kinds of endpoints: generating number of random records (POST), getting them from database in the form of JSON (GET) and flushing tables (PUT). When post method is used it generates random data e.g personal data, metrics data using apps own random data generator and saves it in database. This random data generator takes JSON file with defined data model and uses it to generate new data. When data is in a database it can be accessed with get methods. Project was originally made as support for medical machine learning system OCULUS Project
 
 ## About us 
 We're Computer Science students at Poznan University of Technology. We like programming and had a lot of fun creating this project.  
