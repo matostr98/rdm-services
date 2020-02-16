@@ -11,7 +11,7 @@ class ModelDateTime(ModelEntity):
         self.max_date = model_description['max_date']
         self.date_format = '%m/%d/%Y %I:%M %p'
 
-        if 'format' in model_description:
+        if 'date_format' in model_description:
             self.date_format = model_description['date_format']
 
     def generate_values(self):

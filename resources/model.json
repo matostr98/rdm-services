@@ -59,8 +59,9 @@
     },
     {
       "key": "date",
-      "min_date": "1/1/1970 1:30 PM",
-      "max_date": "12/1/1970 1:30 PM",
+      "min_date": "1970/1/1 1:30 PM",
+      "max_date": "1970/12/1 1:30 PM",
+      "date_format": "%Y/%m/%d %I:%M %p",
       "count": 2
     }
   ]

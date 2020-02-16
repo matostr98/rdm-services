@@ -19,7 +19,7 @@ class MetricsService:
         metrics.patient_id = self.__generate_patient_id()
         metrics.doctor_id = self.__generate_doctor_id()
         metrics.created = self.__generate_date()
-        metrics.attributes = self.__generate_attributes()
+        metrics.attributes_id = self.__generate_attributes()
         metrics.notes = self.__generate_notes()
         logging.basicConfig(level=logging.DEBUG)
         logging.info(f"Created metrics {metrics.patient_id} {metrics.doctor_id} with creation date {metrics.created}")
