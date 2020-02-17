@@ -4,18 +4,22 @@ from datetime import timedelta
 import random
 import logging
 
+from attributes.attributes_service import AttributesService
 from metrics.models import PatientMetrics
 from person.models import Person
 
 
 class MetricsService:
 
+    def __init__(self):
+        self.attributes_service = AttributesService('resources/model.json')
+
     def create_metrics(self):
         metrics = PatientMetrics()
         metrics.patient_id = self.__generate_patient_id()
         metrics.doctor_id = self.__generate_doctor_id()
         metrics.created = self.__generate_date()
-        metrics.attributes = self.__generate_attributes()
+        metrics.attributes_id = self.__generate_attributes()
         metrics.notes = self.__generate_notes()
         logging.basicConfig(level=logging.DEBUG)
         logging.info(f"Created metrics {metrics.patient_id} {metrics.doctor_id} with creation date {metrics.created}")
@@ -52,4 +56,6 @@ class MetricsService:
         return 'some_notes'
 
     def __generate_attributes(self):
-        return '{}'
+        attributes = self.attributes_service.generate_attributes()
+        attributes.save()
+        return attributes.id

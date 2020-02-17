@@ -21,4 +21,5 @@ urlpatterns = [
     path('person/', include('person.urls')),
     path('metrics/', include('metrics.urls')),
     path('generate/', include('generator.urls')),
+    path('attributes/', include('attributes.urls')),
 ]

@@ -1,19 +1,15 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
-from person.models import Person
-from datetime import datetime
-from random import randrange
-from datetime import timedelta
-import random
 
-from person.person_service import PersonService
+from attributes.attributes_service import AttributesService
+from attributes.models import MetricsAttributes
 
 
-class PersonView(View):
+class AttributesView(View):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.person_service = PersonService()
+        self.attributes_service = AttributesService('resources/model.json')
 
     def get(self, request):
         """
@@ -22,12 +18,8 @@ class PersonView(View):
         :param request: has string parameter pesel
         :return: JSON response
         """
-        pesel = request.GET.get('pesel')
-        if pesel:
-            person = list(Person.objects.filter(pesel=pesel).values())[0]
-        else:
-            person_list = list(Person.objects.all().values())
-            return JsonResponse(person_list, safe=False)
+        attributes_list = list(MetricsAttributes.objects.all().values())
+        return JsonResponse(attributes_list, safe=False)
 
     def post(self, request, number=1):
         """
@@ -37,7 +29,7 @@ class PersonView(View):
         :return: http status for created
         """
         for i in range(0, number):
-            # creating new object
-            person = self.person_service.create_person()
-            person.save()
+            attributes = self.attributes_service.generate_attributes()
+            attributes.save()
+
         return HttpResponse(status=201)
